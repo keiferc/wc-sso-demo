@@ -7,9 +7,6 @@ const path = require("path");
 const saml = require("passport-saml");
 const session = require("express-session")
 
-const WELLESLEY_KEY = fs.readFileSync(__dirname + "/certs/wellesley_idp_key.pem", "utf8");
-const PVK = fs.readFileSync(__dirname + "/certs/key.pem", "utf8");
-const PUBLIC_KEY = fs.readFileSync(__dirname + "/certs/cert.pem", "utf8");
 const SSO_DEMO_PAGE = "sso-demo.html"
 
 const app = express();
@@ -22,9 +19,9 @@ const samlStrategy = new saml.Strategy(
         entryPoint: process.env.ENTRY_POINT,
         issuer: 'wc-ao-sso-demo',
         identifierFormat: undefined,
-        cert: WELLESLEY_KEY,
-        decryptionPvk: PVK,
-        privateCert: PVK,
+        cert: process.env.WELLESLEY_KEY,
+        decryptionPvk: process.env.PVK,
+        privateCert: process.env.PVK,
         validateInResponseTo: false,
         disableRequestedAuthnContext: true
     }, 
@@ -77,7 +74,8 @@ app.get("/",
 app.get("/metadata", function (req, res) {
     res.type("application/xml");
     res.status(200).send(
-      samlStrategy.generateServiceProviderMetadata(PUBLIC_KEY, PUBLIC_KEY));
+      samlStrategy.generateServiceProviderMetadata(
+          process.env.PUBLIC_KEY, process.env.PUBLIC_KEY));
 });
 
 app.post('/login/callback',
