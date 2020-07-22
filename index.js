@@ -1,7 +1,6 @@
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv")
 const express = require("express");
-const fs = require("fs");
 const passport = require("passport");
 const path = require("path");
 const saml = require("passport-saml");
