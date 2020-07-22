@@ -12,6 +12,7 @@ const SSO_DEMO_PAGE = "sso-demo.html"
 const app = express();
 
 dotenv.config()
+const PORT = process.env.PORT || 3000
 
 const samlStrategy = new saml.Strategy(
     {
@@ -93,7 +94,7 @@ app.post('/login/callback',
 
 
 // Server Setup
-const server = app.listen(3000, 
+const server = app.listen(PORT, 
     function () {
         console.log('Listening on port %d', server.address().port);
     }
